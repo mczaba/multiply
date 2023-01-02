@@ -7,7 +7,29 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+button {
+  display: inline-block;
+  border-radius: 4px;
+  font-size: 1rem;
+  border: 1px solid #ef8354;
+  color: #4f5d75;
+  font-weight: bold;
+  background-color: #ef8354;
+  text-decoration: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: 31px;;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
 }
