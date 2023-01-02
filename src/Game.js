@@ -19,10 +19,11 @@ export default function Game({ params, endGame }) {
 
   useEffect(() => {
     if (timer == null) return
-    setTimeout(() => {
+    const to = setTimeout(() => {
         if (timer === 1) return checkAnswer()
         setTimer(timer - 1)
     },1000)
+    return () => clearTimeout(to)
   },[timer, setTimer])
 
   function checkAnswer() {
