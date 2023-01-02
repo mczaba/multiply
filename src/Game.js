@@ -28,9 +28,9 @@ export default function Game({ params, endGame }) {
 
   function checkAnswer() {
     if (currentOp.result === currentAnswer) {
-        setAnswers([...answers, {correct: true, op: currentOp.string, result: currentAnswer}])
+        setAnswers([...answers.slice(-10), {correct: true, op: currentOp.string, result: currentAnswer}])
     } else {
-        setAnswers([...answers, {correct: false, op: currentOp.string, result: currentOp.result, answer: currentAnswer}])
+        setAnswers([...answers.slice(-10), {correct: false, op: currentOp.string, result: currentOp.result, answer: currentAnswer}])
     }
     setCurrentAnswer('')
     setCurrentOp(getNewOp(params.min, params.max))
