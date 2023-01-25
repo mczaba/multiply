@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 
 import PreviousResults from "./PreviousResults";
 
-function getNewOp(min, max) {
-  const getRandomNumber = () =>
+function getNewOp(inf, sup) {
+  const getRandomNumber = (min, max) =>
     min + Math.floor((1 + max - min) * Math.random());
-  const n1 = getRandomNumber();
-  const n2 = getRandomNumber();
+  const n1 = getRandomNumber(inf, sup);
+  const n2 = getRandomNumber(2, 10);
 
   return { string: `${n1} × ${n2}`, result: n1 * n2 };
 }
@@ -15,26 +15,26 @@ export default function Game({ params, endGame }) {
   const [answers, setAnswers] = useState([]);
   const [currentOp, setCurrentOp] = useState(getNewOp(params.min, params.max));
   const [currentAnswer, setCurrentAnswer] = useState("");
-  const [timer, setTimer] = useState(params.timer)
+  const [timer, setTimer] = useState(0)
 
   useEffect(() => {
-    if (timer == null) return
-    const to = setTimeout(() => {
-        if (timer === 1) return checkAnswer()
-        setTimer(timer - 1)
-    },1000)
-    return () => clearTimeout(to)
-  },[timer, setTimer])
+    const interval = setInterval(() => {
+      setTimer(t => t + 1)
+    }, 1000)
+    return () => clearTimeout(interval)
+  }, [setTimer])
 
   function checkAnswer() {
+    let tempAnswers = []
     if (currentOp.result === currentAnswer) {
-        setAnswers([...answers.slice(-10), {correct: true, op: currentOp.string, result: currentAnswer}])
+      tempAnswers = [...answers.slice(-10), { correct: true, op: currentOp.string, result: currentAnswer }]
     } else {
-        setAnswers([...answers.slice(-10), {correct: false, op: currentOp.string, result: currentOp.result, answer: currentAnswer}])
+      tempAnswers = [...answers.slice(-10), { correct: false, op: currentOp.string, result: currentOp.result, answer: currentAnswer }]
     }
+    if (tempAnswers.length === 10) return endGame({ results: tempAnswers, timer })
+    setAnswers(tempAnswers)
     setCurrentAnswer('')
     setCurrentOp(getNewOp(params.min, params.max))
-    setTimer(params.timer)
   }
 
   function onKeyDown(e) {
@@ -43,20 +43,17 @@ export default function Game({ params, endGame }) {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>{currentOp.string}</h1>
-        <input
-          type="number"
-          placeholder="Réponse"
-          value={currentAnswer}
-          onChange={(e) => setCurrentAnswer(Number(e.target.value))}
-          onKeyDown={onKeyDown}
-        />
-        <button onClick={checkAnswer}>Valider</button>
-        {timer && <p>{timer}s</p>}
-        <PreviousResults results={answers} />
-      </header>
-    </div>
+    <>
+      <h1>{currentOp.string}</h1>
+      <input
+        type="number"
+        placeholder="Réponse"
+        value={currentAnswer}
+        onChange={(e) => setCurrentAnswer(Number(e.target.value))}
+        onKeyDown={onKeyDown}
+      />
+      <button onClick={checkAnswer}>Valider</button>
+      <PreviousResults results={answers} position={"absolute"} />
+    </>
   );
 }

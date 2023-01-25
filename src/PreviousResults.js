@@ -1,6 +1,6 @@
-export default function PreviousResults({ results }) {
+export default function PreviousResults({ results, position }) {
   return (
-    <div style={{ position: "absolute", left: "10px", margin: "auto 0" }}>
+    <div style={{ position, left: "10px", margin: "auto 0" }}>
       {results.map((result) => (
         <ResultLine result={result} />
       ))}
