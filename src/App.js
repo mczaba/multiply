@@ -7,7 +7,7 @@ import Game from "./Game"
 import Recap from "./Recap";
 
 function App({ bestScores, setBestScores }) {
-  const [params, setParams] = useState({ min: 0, max: 10 });
+  const [params, setParams] = useState({ min: 2, max: 10 });
   const [gameStarted, setGameStarted] = useState(false);
   const [recap, setRecap] = useState(null)
 
